@@ -5,16 +5,16 @@ namespace Akoryak\Components;
 /***
 EXAMPLES:
 
-use Akoryak\Components\CacheDriver;
+use Akoryak\Components\Cache;
 
-$cache = new CacheDriver($host, $port);
+$cache = new Cache($host, $port);
 $data = $cache->get('_some_key_');
 if (empty($data)) {
 	$data = _generate_new_data_();
 	$cache->set('_some_key_', $data, $period);
 }
 
-$cache = new CacheDriver($host, $port, '_prefix_');
+$cache = new Cache($host, $port, '_prefix_');
 $data = $cache->callable(
 	'_this_is_a_key2_',
 	function () use ($something) {

@@ -1,10 +1,10 @@
 {
     "name": "akoryak/components",
-	"type": "library",
+    "type": "library",
     "description": "Set of useful PHP classes",
-	"keywords": ["php", "OOP", "sessions", "memcache", "memcached"],
-	"homepage": "https://github.com/akoryak/components",
-	"license": "Apache-2.0",
+    "keywords": ["php", "OOP", "sessions", "memcache", "memcached"],
+    "homepage": "https://github.com/akoryak/components",
+    "license": "Apache-2.0",
     "require": {
         "php": "^7.4 || ^8.3"
     },
