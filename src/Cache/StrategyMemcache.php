@@ -15,8 +15,16 @@ class StrategyMemcache extends Memcache implements StrategyInterface {
 		$value = $this->get($key);
 		return $this->set($key, $value, $expiration);
 	}
+
+	public function get(string $key) {
+		return parent::get($key);
+	}
 	
 	public function set(string $key, $value, int $expiration = 0): bool {
 		return parent::set($key, $value, MEMCACHE_COMPRESSED, $expiration);
+	}
+
+	public function delete(string $key): bool {
+		return parent::delete($key);
 	}
 }
