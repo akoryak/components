@@ -3,9 +3,10 @@
 namespace Akoryak\Components\Session;
 
 use Akoryak\Components\Cache;
-use SessionHandlerInterface;
+use Akoryak\Components\Session\SessionHandlerInterface;
+use SessionHandlerInterface as BuiltInInterface;
 
-class SessionHandlerCache implements SessionHandlerInterface
+class SessionHandlerCache implements BuiltInInterface, SessionHandlerInterface
 {
     private Cache $cacheDriver;
     private string $prefix = 'session_';
@@ -15,6 +16,11 @@ class SessionHandlerCache implements SessionHandlerInterface
         $this->cacheDriver = $cacheDriver;
         $this->period = $period;
     }
+
+    public function setSessionHandler()
+    {
+		session_set_save_handler($this, true);
+	}
 
     public function open(string $path, string $name): bool
     {

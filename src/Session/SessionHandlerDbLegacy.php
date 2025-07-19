@@ -19,10 +19,11 @@ namespace Akoryak\Components\Session;
 
 ***/
 
-use Akoryak\Components\Session\SessionHandlerInterfaceLegacy;
+use Akoryak\Components\Session\SessionHandlerInterface;
+use Akoryak\Components\Session\SessionHandlerLegacyInterface;
 use PDO;
 
-class SessionHandlerDbLegacy implements SessionHandlerInterfaceLegacy
+class SessionHandlerDbLegacy implements SessionHandlerInterface, SessionHandlerLegacyInterface
 {
     private $database;
     private $table;
@@ -33,7 +34,18 @@ class SessionHandlerDbLegacy implements SessionHandlerInterfaceLegacy
         $this->database = $database;
         $this->table = $tableName;
     }
-	
+
+	public function setSessionHandler() {
+		session_set_save_handler(
+			array($this, 'open'),
+			array($this, 'close'),
+			array($this, 'read'),
+			array($this, 'write'),
+			array($this, 'destroy'),
+			array($this, 'gc')
+		);
+	}
+
     public function open(string $path, string $name): bool
     {
 		// dump('open');

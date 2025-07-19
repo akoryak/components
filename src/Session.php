@@ -20,6 +20,7 @@ use Akoryak\Components\Session\SessionHandlerDb;
 use Akoryak\Components\Session\SessionHandlerDbLegacy;
 use Akoryak\Components\Session\SessionHandlerCache;
 use Akoryak\Components\Session\SessionHandlerCacheLegacy;
+use Akoryak\Components\Session\SessionHandlerLegacyInterface;
 
 class Session {
 
@@ -29,37 +30,26 @@ class Session {
 	// public static function init(PDO|Cache $driver): void
 	public static function init($driver): void
     {
+		$sessionHandler = null;
 		if ($driver instanceof PDO) {
-			$sessionHandler = self::initPdo($driver);
-		} else if ($driver instanceof Cache) {
+			if (PHP_MAJOR_VERSION <= 7) {
+				$sessionHandler = new SessionHandlerDbLegacy($driver);
+			} else {
+				$sessionHandler = new SessionHandlerDb($driver);
+			}
+		} elseif ($driver instanceof Cache) {
 			$period = session_cache_expire() * 60; // in minutes * 60 = in seconds
 			if (PHP_MAJOR_VERSION <= 7) {
 				$sessionHandler = new SessionHandlerCacheLegacy($driver, $period);
 			} else {
 				$sessionHandler = new SessionHandlerCache($driver, $period);
 			}
-			session_set_save_handler($sessionHandler);
+		}
+
+		if (!empty($sessionHandler)) {
+			$sessionHandler->setSessionHandler();
 		} else {
 			throw new SessionException('This handler is not implemented yet');
 		}
 	}
-
-	public static function initPdo(PDO $driver): void
-    {
-		if (PHP_MAJOR_VERSION <= 7) {
-			$sessionHandler = new SessionHandlerDbLegacy($driver);
-			session_set_save_handler(
-				array('Component_Session', 'open'),
-				array('Component_Session', 'close'),
-				array('Component_Session', 'read'),
-				array('Component_Session', 'write'),
-				array('Component_Session', 'destroy'),
-				array('Component_Session', 'gc')
-			);
-		} else {
-			$sessionHandler = new SessionHandlerDb($driver);
-			session_set_save_handler($sessionHandler);
-		}
-	}
-
 }

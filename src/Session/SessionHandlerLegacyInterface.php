@@ -2,7 +2,7 @@
 
 namespace Akoryak\Components\Session;
 
-interface SessionHandlerInterfaceLegacy {
+interface SessionHandlerLegacyInterface {
     public function close(): bool;
     public function destroy(string $id): bool;
     public function gc(int $max_lifetime): int;
