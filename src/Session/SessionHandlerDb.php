@@ -20,9 +20,11 @@ namespace Akoryak\Components\Session;
 ***/
 
 use PDO;
-use SessionHandlerInterface;
+use Akoryak\Components\Session\SessionHandlerInterface;
+use SessionHandlerInterface as BuiltInInterface;
 
-class SessionHandlerDb implements SessionHandlerInterface
+
+class SessionHandlerDb implements BuiltInInterface, SessionHandlerInterface
 {
     private $database;
     private $table;
@@ -33,7 +35,12 @@ class SessionHandlerDb implements SessionHandlerInterface
         $this->database = $database;
         $this->table = $tableName;
     }
-	
+
+    public function setSessionHandler()
+    {
+		session_set_save_handler($this, true);
+	}
+
     public function open(string $path, string $name): bool
     {
 		// dump('open');

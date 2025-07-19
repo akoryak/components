@@ -3,16 +3,12 @@
 namespace Akoryak\Components\Tests;
 
 use Akoryak\Components\Cache;
-use PDOStatement;
 use Akoryak\Components\Session;
 use Akoryak\Components\Session\SessionException;
-use Akoryak\Components\Session\SessionHandlerDb;
-use Akoryak\Components\Session\SessionHandlerCache;
-use Akoryak\Components\Session\SessionHandlerInterfaceLegacy;
-use SessionHandlerInterface;
 use stdClass;
 use PHPUnit\Framework\TestCase;
 use PDO;
+use PDOStatement;
 
 class SessionTest extends TestCase
 {
