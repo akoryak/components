@@ -32,7 +32,7 @@ use Akoryak\Components\Cache\StrategyMemcached;
 
 class Cache {
 
-    private StrategyInterface $strategy;
+    private $strategy;
 
 	public function __construct(string $host = 'localhost', int $port = 11211)
     {
@@ -62,6 +62,11 @@ class Cache {
 		return $this->strategy->delete($key);
 	}
 
+	public function touch(string $key, int $expiration): bool
+	{
+		return $this->strategy->touch($key, $expiration);
+	}
+
 	public function memoize($key, callable $function, $period = 0)
 	{
 		$value = $this->get($key);
@@ -75,6 +80,6 @@ class Cache {
 
     public function __call($function, $arguments)
     {
-		return $this->strategy->$function($arguments);
+		return $this->strategy->$function(...$arguments);
     }
 }
